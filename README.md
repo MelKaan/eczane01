@@ -1,22 +1,65 @@
-GitHub Projesi İçin README Taslağı
-🏥 Automated Pharmacy Monitoring System
-This project is a dedicated software solution designed to monitor and manage pharmacy schedules and locations in real-time. It was developed as a personal challenge to solve a real-world problem using robust software engineering principles.
+## Automated Pharmacy Monitoring System
+This project is a dedicated software solution that displays on-duty pharmacy information in real time for Marmaris, Turkey. It is designed to run on Raspberry Pi devices connected to monitors in fullscreen mode.
 
-🛠 Tech Stack
-Language: C# / .NET (veya hangi dili kullandıysan değiştir)
+## Tech Stack
+- Language: Python
+- UI/Display: Pygame
+- Data Fetching: Requests, BeautifulSoup
+- QR Generation: qrcode, Pillow
+- Data Source: Muğla Eczacı Odası (local pharmacy listings)
 
-APIs: Google Maps API / Local Pharmacy Data APIs
+## Why I Built This
+This project was built step-by-step to solve a real operational need: showing accurate, readable, and continuously updated on-duty pharmacy information on public screens.
 
-Database: SQL Server / SQLite (kullandığını yaz)
+The goal is to provide a reliable bridge between live pharmacy data and a simple display experience for end users.
 
-💡 Why I Built This (The "Human" Element)
-Unlike many AI-generated scripts, this project was built step-by-step to address a specific logistical problem in healthcare. My goal was to create a reliable bridge between real-time data and user-friendly interfaces.
+## Challenges I Overcame
+- Data Parsing Reliability:
+I handled inconsistent HTML structures and text formatting from source pages by improving parsing logic and cleanup rules.
 
-🧩 Challenges I Overcame (Persistence)
-During development, I faced several "brick walls" that I had to break through:
+- Scheduling and Update Timing:
+I implemented controlled fetch scheduling and retry behavior to avoid missing daily updates while preventing unnecessary request loops.
 
-API Synchronization: I initially struggled with data delays from external APIs. I solved this by implementing a custom caching logic and optimizing asynchronous calls.
+- Display Readability:
+I optimized dynamic font sizing, pagination, and layout so the screen remains readable across different monitor resolutions.
 
-Logic Errors: Handling the shifting schedules of pharmacies required complex conditional logic. I spent weeks debugging and refining these algorithms to ensure 100% accuracy.
+## Deployment
+- Target: Raspberry Pi + monitor
+- Startup: manual run with Bash script (`start_pharmacy.sh`)
+- Runtime: fullscreen pharmacy board
+- Scope: Marmaris only (`MARMARİS (1)` and `MARMARİS (2)`)
 
-Continuous Improvement: This is a living project. I am currently working on adding [X özelliğini ekle, örn: notification system] to further enhance the user experience.
+## Run
+```bash
+pip install -r requirements.txt
+python3 main.py
+```
+
+## Utility Commands
+- `python3 main.py --windowed`
+- `python3 main.py --fetch-now`
+- `python3 main.py --test-schedule`
+
+## How It Works (Short)
+
+```python
+if should_fetch(last_fetch_date, last_fetch_attempt):
+    new_pharmacies = fetch_today_pharmacies()
+```
+Fetch runs only when needed (scheduled time + retry control), then refreshes the screen data.
+
+```python
+TARGET_ORDER = ["MARMARİS (1", "MARMARİS (2"]
+```
+Only Marmaris regions are accepted, so the display always stays in project scope.
+
+```python
+font_size, title_font_size, qr_box_size = calculate_optimal_sizes(screen, pharmacies)
+```
+Layout sizes are calculated dynamically to fit different monitor resolutions.
+
+```python
+if lat and lng:
+    maps_url = f"https://www.google.com/maps?q={lat},{lng}"
+```
+QR codes use coordinates when available; otherwise they fall back to normalized address search.
