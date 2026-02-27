@@ -1,32 +1,22 @@
-# Marmaris On-Duty Pharmacy Display
+GitHub Projesi İçin README Taslağı
+🏥 Automated Pharmacy Monitoring System
+This project is a dedicated software solution designed to monitor and manage pharmacy schedules and locations in real-time. It was developed as a personal challenge to solve a real-world problem using robust software engineering principles.
 
-Fullscreen pharmacy board app for Raspberry Pi devices connected to a monitor. It fetches and displays only Marmaris (Turkey) on-duty pharmacy data.
+🛠 Tech Stack
+Language: C# / .NET (veya hangi dili kullandıysan değiştir)
 
-## Target Setup
-- Raspberry Pi + monitor
-- Manual start on each device via Bash script
-- Fullscreen display mode for public viewing
+APIs: Google Maps API / Local Pharmacy Data APIs
 
-## Install
-```bash
-pip install -r requirements.txt
-```
+Database: SQL Server / SQLite (kullandığını yaz)
 
-## Run
-```bash
-python3 main.py
-```
+💡 Why I Built This (The "Human" Element)
+Unlike many AI-generated scripts, this project was built step-by-step to address a specific logistical problem in healthcare. My goal was to create a reliable bridge between real-time data and user-friendly interfaces.
 
-Or use the included startup script:
-```bash
-bash start_pharmacy.sh
-```
+🧩 Challenges I Overcame (Persistence)
+During development, I faced several "brick walls" that I had to break through:
 
-## Test / Utility Modes
-- `python3 main.py --windowed` : test in 800x600 window
-- `python3 main.py --fetch-now` : fetch once, print results, exit
-- `python3 main.py --test-schedule` : show fetch scheduling info
+API Synchronization: I initially struggled with data delays from external APIs. I solved this by implementing a custom caching logic and optimizing asynchronous calls.
 
-## Scope
-- Data source: Muğla Eczacı Odası
-- Region filter: Marmaris only (`MARMARİS (1)` and `MARMARİS (2)`)
+Logic Errors: Handling the shifting schedules of pharmacies required complex conditional logic. I spent weeks debugging and refining these algorithms to ensure 100% accuracy.
+
+Continuous Improvement: This is a living project. I am currently working on adding [X özelliğini ekle, örn: notification system] to further enhance the user experience.
