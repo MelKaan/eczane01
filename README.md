@@ -63,3 +63,14 @@ if lat and lng:
     maps_url = f"https://www.google.com/maps?q={lat},{lng}"
 ```
 QR codes use coordinates when available; otherwise they fall back to normalized address search.
+
+## Photos
+
+### Display Screen
+![Display Screen](./WhatsApp%20Image%202026-02-28%20at%2010.01.40.jpeg)
+
+### Window View
+![Window View](./WhatsApp%20Image%202026-02-28%20at%2010.02.25.jpeg)
+
+### Storefront
+![Storefront](./WhatsApp%20Image%202026-02-28%20at%2010.03.07.jpeg)
