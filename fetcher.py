@@ -2,19 +2,18 @@ import requests
 from bs4 import BeautifulSoup
 import datetime
 import re
+import traceback
 
 from settings import WEBSITE_URL, USER_AGENT, FETCH_HOUR, FETCH_MINUTE
 
 
 PHONE_REGEX = re.compile(r"0\d{10}")
 
-# relaxed prefixes
 TARGET_ORDER = [
     "MARMARİS (1",
     "MARMARİS (2"
 ]
 
-# Google Maps coordinate patterns
 COORD_REGEX = re.compile(r"@(-?\d+\.\d+),(-?\d+\.\d+)")
 QUERY_COORD_REGEX = re.compile(r"query=(-?\d+\.\d+),(-?\d+\.\d+)")
 
@@ -69,10 +68,6 @@ def region_matches(region_text):
 
 
 def extract_coordinates(block):
-    """
-    Extract coordinates from map links if present
-    """
-
     links = block.find_all("a", href=True)
 
     for a in links:
@@ -119,6 +114,10 @@ def fetch_today_pharmacies():
 
             if not region_matches(region):
                 continue
+
+            # Warn if a region key is about to be overwritten
+            if region in found:
+                print(f"Warning: duplicate region detected and overwritten: '{region}'")
 
             raw_block_text = ""
             raw_block_node = header.find_next_sibling()
@@ -171,7 +170,9 @@ def fetch_today_pharmacies():
         return pharmacies
 
     except Exception as e:
+        # Print full traceback so errors are visible on the Pi console
         print(f"Hata oluştu: {e}")
+        traceback.print_exc()
         return []
 
 

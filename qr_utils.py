@@ -46,14 +46,12 @@ def normalize_address(address: str) -> str:
 
 
 @lru_cache(maxsize=256)
-def _make_qr(lat, lng, address, box_size):
-
-    # Prefer coordinates
+def _make_qr(lat, lng, normalized_address, box_size):
+    # Prefer coordinates when available
     if lat and lng:
         maps_url = f"https://www.google.com/maps?q={lat},{lng}"
     else:
-        fixed_address = normalize_address(address)
-        maps_url = f"https://www.google.com/maps/search/?api=1&query={quote(fixed_address)}"
+        maps_url = f"https://www.google.com/maps/search/?api=1&query={quote(normalized_address)}"
 
     qr = qrcode.QRCode(box_size=box_size, border=2)
     qr.add_data(maps_url)
@@ -64,6 +62,7 @@ def _make_qr(lat, lng, address, box_size):
 
 
 def generate_qr_surface(address, lat=None, lng=None, box_size=5):
-
-    img = _make_qr(lat, lng, address, box_size)
+    # Normalize before the cache key so minor formatting differences don't cause misses
+    normalized = normalize_address(address) if not (lat and lng) else address
+    img = _make_qr(lat, lng, normalized, box_size)
     return pil_image_to_surface(img)
